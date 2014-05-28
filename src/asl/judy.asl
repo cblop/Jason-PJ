@@ -2,7 +2,7 @@
 
 /* Initial beliefs and rules */
 
-pos(stageRight).
+//pos(stageRight).
 //health(5).
 
 /* Initial goals */

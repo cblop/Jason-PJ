@@ -1,16 +1,9 @@
 MAS pjagents {
-
-	infrastructure: Centralised
-
-	environment: Env
-
-	agents:
-        punch;
-
-        judy;
-
-        narrative;
-
-	aslSourcePath:
-		"src/asl";
+infrastructure: Centralised
+environment: Env
+agents:
+punch;
+judy;
+aslSourcePath:
+"src/asl";
 }

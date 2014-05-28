@@ -41,10 +41,25 @@ public class Env extends Environment {
 
     }
     
+    
     public void startAgents(String[] args) {
     	System.out.println("Env is started");
+    	System.out.println(SettingsDialogue.settingsMap);
         super.init(args);
-        addPercept(Literal.parseLiteral("percept(demo)"));
+        //addPercept(Literal.parseLiteral("percept(demo)"));
+        
+        if (SettingsDialogue.settingsMap.get("punch") == 1) {
+        	addPercept("punch", Literal.parseLiteral("pos(stageLeft)"));
+        	addPercept("punch", Literal.parseLiteral("anger(" + SettingsDialogue.settingsMap.get("punchanger")  +")"));
+        }
+        if (SettingsDialogue.settingsMap.get("judy") == 1) {
+        	addPercept("judy", Literal.parseLiteral("pos(stageRight)"));
+        	addPercept("judy", Literal.parseLiteral("health(" + SettingsDialogue.settingsMap.get("judyhealth")  +")"));
+        }
+        if (SettingsDialogue.settingsMap.get("joey") == 1) {
+        	addPercept("joey", Literal.parseLiteral("pos(stageRight)"));
+        	addPercept("joey", Literal.parseLiteral("happy(" + SettingsDialogue.settingsMap.get("joeyhappy")  +")"));
+        }
     	
     }
 

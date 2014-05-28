@@ -2,8 +2,8 @@
 
 /* Initial beliefs and rules */
 
-pos(stageLeft).
-anger(0).
+//pos(stageLeft).
+//anger(0).
 
 /* Initial goals */
 //!hit(judy).
