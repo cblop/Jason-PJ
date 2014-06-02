@@ -102,7 +102,7 @@ public class Actor extends Entity {
 	}
 
 	void update() {
-		processMouse();
+		//processMouse();
 		currentAnim.update();
 		sprite = currentAnim.frames[currentAnim.currentFrame];
 	}
