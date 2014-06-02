@@ -1,4 +1,4 @@
-// Judy agent
+// Joey agent
 
 /* Initial beliefs and rules */
 
@@ -12,35 +12,35 @@ pos(stageRight).
 /* Plans */
 
 +pos(P) : true
-	<- .print("Judy is at ", P);
+	<- .print("Joey is at ", P);
 		move(P).
 
 +!question(punch) : health(X) & X <= 0
 	<- !die.
 	
 +!die
-	<- .print("Judy is dead.");
+	<- .print("Joey is dead.");
 	-pos(stageRight);
 	+pos(offstageLeft);
 	.send(narrative, achieve, endScene).
 	
 +!question(punch) : health(X) & X > 0
-	<- .print("Judy asks Punch a question.");
-	.send(punch, achieve, question(judy));
+	<- .print("Joey asks Punch a question.");
+	.send(punch, achieve, question(joey));
 	say(wassup);
 	.wait(3000);
 	!question(punch).
 	
 +!greet(punch)
-	<- .send(punch, tell, greeting(judy));
+	<- .send(punch, tell, greeting(joey));
 	.wait(3000);
 	say(hello);
 	.print("Hi, Punch").
 
 +!take_damage
 	<- ?health(X);
-	.print("Judy's health is ", X, ".");
-	.send(punch, tell, ouch(judy));
+	.print("Joey's health is ", X, ".");
+	.send(punch, tell, ouch(joey));
 	-health(X);
 	+health(X - 1).
 

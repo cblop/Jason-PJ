@@ -56,6 +56,7 @@ public class PuppetShow extends PApplet {
 
         Actor punch;
         Actor judy;
+        Actor joey;
 
 		// put punch's dialogue into a hash map
 		HashMap<String, Dialogue> punchDialogue = new HashMap<String, Dialogue>();
@@ -91,6 +92,15 @@ public class PuppetShow extends PApplet {
 
 		// initialise the judy actor
 		judy = new Actor(this, OFFSTAGERIGHT, new Coord(scalef, scalef), judyAnims, punchDialogue);
+		
+		
+		PImage[] joeyRest = {loadImage("pics/JoeySide.png")};
+		// animations in a hash map
+		HashMap<String, Animation> joeyAnims = new HashMap<String, Animation>();
+		joeyAnims.put("rest", new Animation(joeyRest));
+
+		// initialise the joey actor
+		joey = new Actor(this, OFFSTAGERIGHT, new Coord(scalef, scalef), joeyAnims, punchDialogue);
 		
 		
 		PImage stageImg = loadImage("pics/Stage-top.png");
