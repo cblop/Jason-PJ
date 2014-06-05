@@ -20,13 +20,14 @@ public class PuppetShow extends PApplet {
 	final int screenHeight = 600;
 	final float scalef = 0.7f; // size of the actor
 
-	public static final Coord OFFSTAGELEFT = new Coord(-500, 500);
-    public static final Coord OFFSTAGERIGHT = new Coord(1200, 500);
-    public static final Coord STAGELEFT = new Coord(200, 500);
-    public static final Coord STAGELEFTCENTRE = new Coord(450, 500);
-    public static final Coord STAGERIGHT = new Coord(700, 500);
-    public static final Coord STAGERIGHTCENTRE = new Coord(750, 500);
-    public static final Coord STAGECENTRE = new Coord(400, 500);
+	public static final Coord OFFSTAGELEFT = new Coord(200, 500);
+    public static final Coord OFFSTAGERIGHT = new Coord(1300, 500);
+    public static final Coord STAGELEFT = new Coord(500, 500);
+    public static final Coord STAGELEFTCENTRE = new Coord(600, 500);
+    public static final Coord STAGERIGHT = new Coord(1000, 500);
+    public static final Coord STAGERIGHTCENTRE = new Coord(900, 500);
+    public static final Coord STAGECENTRE = new Coord(750, 500);
+
 
 	Scene scene;
 	Entity stage;
@@ -76,7 +77,7 @@ public class PuppetShow extends PApplet {
 		HashMap<String, Animation> punchAnims = new HashMap<String, Animation>();
 		punchAnims.put("rest", new Animation(punchRest));
 		punchAnims.put("front", new Animation(punchFront));
-		punchAnims.put("hit", new Animation(punchHit));
+		//punchAnims.put("hit", new Animation(punchHit));
 
 		// initialise the punch actor
 		punch = new Actor(this, OFFSTAGELEFT, new Coord(scalef, scalef), punchAnims, punchDialogue);
@@ -100,7 +101,7 @@ public class PuppetShow extends PApplet {
 		joeyAnims.put("rest", new Animation(joeyRest));
 
 		// initialise the joey actor
-		joey = new Actor(this, OFFSTAGERIGHT, new Coord(scalef, scalef), joeyAnims, punchDialogue);
+		joey = new Actor(this, OFFSTAGELEFT, new Coord(scalef, scalef), joeyAnims, punchDialogue);
 		
 		
 		PImage stageImg = loadImage("pics/Stage-top.png");
@@ -111,11 +112,18 @@ public class PuppetShow extends PApplet {
 
 		// this is a list of all the events for the animation
 		
+
 		/*
-		events.add(new MoveEvent(this, punch, 10, 50, stageLeft));
-		events.add(new MoveEvent(this, punch, 200, 50, stageCentre));
-		events.add(new MoveEvent(this, punch, 400, 50, stageRight));
+		events.add(new MoveEvent("punch", 10f, 10f, "stageLeft"));
+		events.add(new MoveEvent("judy", 10f, 10f, "stageLeft"));
 		*/
+		/*
+		//events.add(new MoveEvent("joey", 10f, 10f, "stageCentre"));
+		events.add(new MoveEvent("punch", 40f, 20f, "offstageLeft"));
+		events.add(new MoveEvent("judy", 40f, 20f, "offstageLeft"));
+		//events.add(new MoveEvent("joey", 40f, 20f, "offstageLeft"));
+        */
+		
 		
 
 		//events.add(new MoveEvent(this, judy, 50, 50, stageRight));
@@ -135,12 +143,20 @@ public class PuppetShow extends PApplet {
 		events.add(new SpeakEvent(this, punch, 400.0f, 20.0f, "disco"));
 		*/
 
-		actors.put("punch", punch); // map of all actors in the scene
 		actors.put("judy", judy);
+        actors.put("punch", punch); // map of all actors in the scene
+		//actors.put("joey", joey);
 
 		// create and run the scene
 		scene = new Scene(this, screenWidth, screenHeight, bgimg, events, actors);
 		scene.runEvents();
+	}
+	
+	public void mouseClicked() {
+		for (Actor act : actors.values()) {
+                act.moveTo(new Coord(mouseX, mouseY), 6.0f);
+                System.out.println("X: " + act.target.getX() + "  Y: " + act.target.getY());
+		}
 	}
 
 	public void draw() {
@@ -151,8 +167,9 @@ public class PuppetShow extends PApplet {
 		
 		// then the actors
 		for (Actor act : actors.values()) {
-			act.update();
+			//act.update();
 			act.display();
+			//System.out.println(act.location.getX());
 		}
 		
 

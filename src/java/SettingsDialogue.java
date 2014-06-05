@@ -42,7 +42,6 @@ public class SettingsDialogue extends JFrame implements ActionListener, ChangeLi
     //Env env = new Env();
 	
 	public SettingsDialogue() {
-		//mainPanel = new JPanel(new GridLayout(0,1));
 		mainPanel = new JPanel(new GridLayout(0,1));
 		settingsPanel = new JPanel(new FlowLayout());
 		charPanel = new JPanel(new FlowLayout());
@@ -104,7 +103,7 @@ public class SettingsDialogue extends JFrame implements ActionListener, ChangeLi
 		charPanel.add(joeyHappyLabel);
 		charPanel.add(joeyHappyLevel);
 		charPanel.setBorder(BorderFactory.createTitledBorder("Characters"));
-		mainPanel.add(settingsPanel);
+		//mainPanel.add(settingsPanel);
 		mainPanel.add(charPanel);
 		mainPanel.add(startbutton);
 		this.add(mainPanel);

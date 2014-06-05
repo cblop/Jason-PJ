@@ -102,20 +102,22 @@ public class Actor extends Entity {
 	}
 
 	void update() {
-		//processMouse();
+		/*
+		processMouse();
 		currentAnim.update();
 		sprite = currentAnim.frames[currentAnim.currentFrame];
+		*/
 	}
 
 	void display() {
 		move();
-		zoom();
 		if (dialogue != null) {
                 speak();
 		}
 		parent.pushMatrix();
 		//parent.imageMode(PConstants.CENTER);
 		//parent.translate(horient * location.getX(), location.getY());
+		zoom();
 		parent.scale(horient * zoom.getX(), zoom.getY());
 		//parent.image(sprite, 0, 0);
 		parent.image(sprite, horient * location.getX(), location.getY(), sprite.width, sprite.height);

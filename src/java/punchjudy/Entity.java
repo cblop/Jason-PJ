@@ -31,6 +31,7 @@ public class Entity {
 	public void moveTo(Coord trgt, float spd) {
 		//target = new Coord (trgt.getX() + (0.5f * sprite.width), trgt.getY());
 		target = trgt;
+		/*
         if (target.getX() < location.getX() && horient == 1.0){
                 fliph();
         }
@@ -39,15 +40,17 @@ public class Entity {
         }
 
 		if (horient == 1.0f) {
-                target.setX(target.getX() + (horient * (0.5f * sprite.width)));
+                //target.setX(target.getX() + (horient * (0.5f * sprite.width)));
                 //target.setX(target.getX() + sprite.width);
 		}
+		*/
 
 		speed = spd;
 	}
 
 	void processMouse() {
 		if (parent.mousePressed) {
+			//System.out.println("Speed: " + speed);
 			moveTo(new Coord(parent.mouseX, parent.mouseY), 6.0f);
 
 		}
@@ -68,17 +71,17 @@ public class Entity {
 			horient = 1.0f;
 		}
 	}
-
-
-
+	
 	void move() {
 		Coord toTarget = new Coord(target.getX() - location.getX(), target.getY() - location.getY());
-		float toTargetLength = (float) Math.sqrt((toTarget.getX() * toTarget.getX()) + (toTarget.getX() * toTarget.getY()));
+		float toTargetLength = (float) Math.sqrt((toTarget.getX() * toTarget.getX()) + (toTarget.getY() * toTarget.getY()));
 		toTarget.setX(toTarget.getX() / toTargetLength);
 		toTarget.setY(toTarget.getY() / toTargetLength);
 
 		// this is a kludge?
 		if (toTargetLength > speed) {
+			//location.setX(location.getX() + Math.signum(toTarget.getX()) * speed);
+			//location.setY(location.getY() + Math.signum(toTarget.getY()) * speed);
 			location.setX(location.getX() + toTarget.getX() * speed);
 			location.setY(location.getY() + toTarget.getY() * speed);
 		}
@@ -107,12 +110,13 @@ public class Entity {
 	}
 
 	void update() {
-		processMouse();
+		//processMouse();
 	}
 
 	void display() {
 		move();
-		zoom();
+		//parent.imageMode(PConstants.CENTER);
+		//zoom();
 		parent.pushMatrix();
 		parent.scale(horient * zoom.getX(), zoom.getY());
 		parent.image(sprite, horient * location.getX(), location.getY(), sprite.width, sprite.height);

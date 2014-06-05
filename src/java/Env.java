@@ -53,11 +53,11 @@ public class Env extends Environment {
         	addPercept("punch", Literal.parseLiteral("anger(" + SettingsDialogue.settingsMap.get("punchanger")  +")"));
         }
         if (SettingsDialogue.settingsMap.get("judy") == 1) {
-        	addPercept("judy", Literal.parseLiteral("pos(stageRight)"));
+        	addPercept("judy", Literal.parseLiteral("pos(stageLeft)"));
         	addPercept("judy", Literal.parseLiteral("health(" + SettingsDialogue.settingsMap.get("judyhealth")  +")"));
         }
         if (SettingsDialogue.settingsMap.get("joey") == 1) {
-        	addPercept("joey", Literal.parseLiteral("pos(stageRight)"));
+        	addPercept("joey", Literal.parseLiteral("pos(stageLeft)"));
         	addPercept("joey", Literal.parseLiteral("happy(" + SettingsDialogue.settingsMap.get("joeyhappy")  +")"));
         }
     	
@@ -75,7 +75,7 @@ public class Env extends Environment {
     	
     	if (functor.equals("move")) {
     		System.out.println(values.get(0).toString());
-    		PuppetShow.addEvent(new MoveEvent(agName, 10, 20, valuef));
+    		PuppetShow.addEvent(new MoveEvent(agName, 0, 10, valuef));
     	}
     	
     	if (functor.equals("say")) {
