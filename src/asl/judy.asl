@@ -4,10 +4,14 @@
 
 //pos(stageRight).
 //health(5).
+//worry(0).
+//speed(10).
+//speed goes down with health. So why not just have health?
 
 /* Initial goals */
 // Taunt Punch. Must first greet him and ask questions.
 //!question(punch).
+!makeConfess(punch).
 
 /* Plans */
 
@@ -23,6 +27,9 @@
 	-pos(stageRight);
 	+pos(offstageLeft);
 	.send(narrative, achieve, endScene).
+	
++!makeConfess(X)
+	<- !question(X).
 	
 +!question(punch) : health(X) & X > 0
 	<- .print("Judy asks Punch a question.");

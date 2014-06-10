@@ -41,7 +41,7 @@ public class Actor extends Entity {
 	void setSpeech(String spch) {
 		if (dialogue != null) {
             speech = dialogue.get(spch);
-            System.out.println("Speech string: " + speech.subtitle);
+            //System.out.println("Speech string: " + speech.subtitle);
 		}
 	}
 
@@ -102,14 +102,13 @@ public class Actor extends Entity {
 	}
 
 	void update() {
-		/*
 		processMouse();
 		currentAnim.update();
 		sprite = currentAnim.frames[currentAnim.currentFrame];
-		*/
 	}
 
 	void display() {
+		parent.imageMode(PConstants.CENTER);
 		move();
 		if (dialogue != null) {
                 speak();

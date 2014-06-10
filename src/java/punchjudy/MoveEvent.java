@@ -27,14 +27,6 @@ public class MoveEvent extends Event {
 		float toTargetLength = (float) Math.sqrt((toTarget.getX() * toTarget.getX()) + (toTarget.getY() * toTarget.getY()));
 		object.moveTo(target, toTargetLength / dur);
 		
-		/*
-        if (target.getX() > object.location.getX() && object.horient == -1.0){
-                object.fliph();
-        }
-        else if (target.getX() < object.location.getX() && object.horient == 1.0){
-                object.fliph();
-        }
-        */
 	}
 
 }

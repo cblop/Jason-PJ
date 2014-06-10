@@ -20,13 +20,13 @@ public class PuppetShow extends PApplet {
 	final int screenHeight = 600;
 	final float scalef = 0.7f; // size of the actor
 
-	public static final Coord OFFSTAGELEFT = new Coord(200, 500);
-    public static final Coord OFFSTAGERIGHT = new Coord(1300, 500);
-    public static final Coord STAGELEFT = new Coord(500, 500);
-    public static final Coord STAGELEFTCENTRE = new Coord(600, 500);
-    public static final Coord STAGERIGHT = new Coord(1000, 500);
-    public static final Coord STAGERIGHTCENTRE = new Coord(900, 500);
-    public static final Coord STAGECENTRE = new Coord(750, 500);
+	public static final Coord OFFSTAGELEFT = new Coord(100, 500);
+    public static final Coord OFFSTAGERIGHT = new Coord(1400, 500);
+    public static final Coord STAGELEFT = new Coord(200, 500);
+    public static final Coord STAGELEFTCENTRE = new Coord(350, 500);
+    public static final Coord STAGERIGHT = new Coord(800, 500);
+    public static final Coord STAGERIGHTCENTRE = new Coord(650, 500);
+    public static final Coord STAGECENTRE = new Coord(500, 500);
 
 
 	Scene scene;
@@ -77,7 +77,7 @@ public class PuppetShow extends PApplet {
 		HashMap<String, Animation> punchAnims = new HashMap<String, Animation>();
 		punchAnims.put("rest", new Animation(punchRest));
 		punchAnims.put("front", new Animation(punchFront));
-		//punchAnims.put("hit", new Animation(punchHit));
+		punchAnims.put("hit", new Animation(punchHit));
 
 		// initialise the punch actor
 		punch = new Actor(this, OFFSTAGELEFT, new Coord(scalef, scalef), punchAnims, punchDialogue);
@@ -157,6 +157,7 @@ public class PuppetShow extends PApplet {
                 act.moveTo(new Coord(mouseX, mouseY), 6.0f);
                 System.out.println("X: " + act.target.getX() + "  Y: " + act.target.getY());
 		}
+		System.out.println(actors.get("punch").currentAnim);
 	}
 
 	public void draw() {
@@ -167,7 +168,7 @@ public class PuppetShow extends PApplet {
 		
 		// then the actors
 		for (Actor act : actors.values()) {
-			//act.update();
+			act.update();
 			act.display();
 			//System.out.println(act.location.getX());
 		}

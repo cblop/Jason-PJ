@@ -7,7 +7,7 @@ public class SpeakEvent extends Event {
 		super(act, sTime, d);
 		actor = act;
 		dialogue = dial;
-		System.out.println("SpeakEvent constructor: " + sTime);
+		//System.out.println("SpeakEvent constructor: " + sTime);
 	}
 
 	protected void trigger(Entity obj) {

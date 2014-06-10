@@ -37,8 +37,8 @@ public class Scene {
 			for (Event ev : events) {
 				if (ev.startTime == 0) {
 					//System.out.println("actor: " + actors.get(ev.getObjectID()).location.getX());
-					System.out.println("Trigger");
-					System.out.println(ev.getClass().toString());
+					//System.out.println("Trigger");
+					//System.out.println(ev.getClass().toString());
 					ev.trigger(actors.get(ev.getObjectID()));
 					ev.startTime -= 1;
 				}

@@ -30,7 +30,17 @@ public class Entity {
 
 	public void moveTo(Coord trgt, float spd) {
 		//target = new Coord (trgt.getX() + (0.5f * sprite.width), trgt.getY());
+
+        if (trgt.getX() > location.getX() && horient == -1.0){
+                fliph();
+        }
+        else if (trgt.getX() < location.getX() && horient == 1.0){
+                fliph();
+        }
+
 		target = trgt;
+
+
 		/*
         if (target.getX() < location.getX() && horient == 1.0){
                 fliph();
@@ -38,12 +48,12 @@ public class Entity {
         else if (target.getX() > location.getX() && horient == -1.0){
                 fliph();
         }
+		*/
 
 		if (horient == 1.0f) {
                 //target.setX(target.getX() + (horient * (0.5f * sprite.width)));
-                //target.setX(target.getX() + sprite.width);
+                target.setX(target.getX() + (0.5f * sprite.width));
 		}
-		*/
 
 		speed = spd;
 	}
@@ -58,16 +68,16 @@ public class Entity {
 
 	void fliph() {
 		if (horient == 1.0f) {
-			//location.setX(location.getX() + (0.5f * sprite.width));
-			location.setX(location.getX() - sprite.width);
-			//target.setX(target.getX() - sprite.width);
+			location.setX(location.getX() - (0.5f * sprite.width));
+			//location.setX(location.getX() - sprite.width);
+			//target.setX(target.getX() - (0.5f * sprite.width));
 			horient = -1.0f;
 		}
 		else {
-			location.setX(location.getX() - sprite.width);
+			//location.setX(location.getX() - sprite.width);
 			//target.setX(target.getX() + sprite.width);
-			//location.setX(location.getX() - (0.5f * sprite.width));
-			//target.setX(target.getX() - (0.5f * sprite.width));
+			location.setX(location.getX() + (0.5f * sprite.width));
+			//target.setX(target.getX() + (0.5f * sprite.width));
 			horient = 1.0f;
 		}
 	}
@@ -84,6 +94,9 @@ public class Entity {
 			//location.setY(location.getY() + Math.signum(toTarget.getY()) * speed);
 			location.setX(location.getX() + toTarget.getX() * speed);
 			location.setY(location.getY() + toTarget.getY() * speed);
+		}
+		else {
+			location = target;
 		}
 
 	}
@@ -115,7 +128,7 @@ public class Entity {
 
 	void display() {
 		move();
-		//parent.imageMode(PConstants.CENTER);
+		parent.imageMode(PConstants.CENTER);
 		//zoom();
 		parent.pushMatrix();
 		parent.scale(horient * zoom.getX(), zoom.getY());
