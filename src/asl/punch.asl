@@ -39,9 +39,11 @@
 	+anger(X + 1);
 	!anger_check.
 
-/* 
+
 +!anger_check : anger(X) & X < 3
 	<- .print("Punch is happy").
+	
+	/*
 
 +!anger_check : anger(X) & X < 6
 	<- .print("Punch is OK").

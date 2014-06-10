@@ -5,11 +5,11 @@
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="lib" path="libs/core.jar"/>
 	<classpathentry kind="lib" path="libs/jason.jar"/>
-	<classpathentry kind="lib" path="libs/minim.jar"/>
-	<classpathentry kind="lib" path="libs/jsminim.jar"/>
-	<classpathentry kind="lib" path="libs/tritonus_share.jar"/>
 	<classpathentry kind="lib" path="libs/jl1.0.jar"/>
+	<classpathentry kind="lib" path="libs/jsminim.jar"/>
+	<classpathentry kind="lib" path="libs/minim.jar"/>
 	<classpathentry kind="lib" path="libs/mp3spi1.9.4.jar"/>
 	<classpathentry kind="lib" path="libs/tritonus_aos.jar"/>
+	<classpathentry kind="lib" path="libs/tritonus_share.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
