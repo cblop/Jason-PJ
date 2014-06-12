@@ -13,7 +13,7 @@ anger(0).
 
 +greeting(judy)
 	<- .print("Hi, Judy!");
-		say(hello);
+		//say(hello);
 		-greeting(judy).
 
 +pos(P) : true
@@ -48,16 +48,16 @@ anger(0).
 	<- .print("Punch is happy");
 	   .print("Anger:", X).
 	
-	/*
+
 
 +!anger_check : anger(X) & X < 6
 	<- .print("Punch is OK").
 
 +!anger_check : anger(X) & X > 5 & X < 9
 	<- .print("Punch is annoyed").
-	*/
 	
-+!anger_check : anger(X) & X > 2
+	
++!anger_check : anger(X) & X > 8
 	<- .print("Punch is angry");
 	!hit(judy).
 

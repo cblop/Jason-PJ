@@ -57,8 +57,8 @@ public class Env extends Environment {
 //        	addPercept("judy", Literal.parseLiteral("health(" + SettingsDialogue.settingsMap.get("judyhealth")  +")"));
         }
         if (SettingsDialogue.settingsMap.get("joey") == 1) {
-        	addPercept("joey", Literal.parseLiteral("pos(stageLeft)"));
-        	addPercept("joey", Literal.parseLiteral("happy(" + SettingsDialogue.settingsMap.get("joeyhappy")  +")"));
+        	//addPercept("joey", Literal.parseLiteral("pos(stageLeft)"));
+        	//addPercept("joey", Literal.parseLiteral("happy(" + SettingsDialogue.settingsMap.get("joeyhappy")  +")."));
         }
     	
     }
