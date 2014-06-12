@@ -3,7 +3,7 @@
 /* Initial beliefs and rules */
 
 //pos(stageLeft).
-//anger(0).
+anger(0).
 
 /* Initial goals */
 //!hit(judy).
@@ -32,16 +32,21 @@
 +anger(X) <- .print("Punch's anger level is ", X).
 
 +!question(judy)
-	<- ?anger(X);
+	<-
 	//-question(judy);
-	-anger(X);
 	.print("Question from Judy");
-	+anger(X + 1);
+	!get_angry;
 	!anger_check.
+	
++!get_angry
+	<- ?anger(X);
+	-anger(X);
+	+anger(X + 1).
 
 
 +!anger_check : anger(X) & X < 3
-	<- .print("Punch is happy").
+	<- .print("Punch is happy");
+	   .print("Anger:", X).
 	
 	/*
 
