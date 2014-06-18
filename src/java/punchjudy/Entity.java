@@ -49,11 +49,12 @@ public class Entity {
                 fliph();
         }
 		*/
-
+/*
 		if (horient == 1.0f) {
                 //target.setX(target.getX() + (horient * (0.5f * sprite.width)));
                 target.setX(target.getX() + (0.5f * sprite.width));
 		}
+		*/
 
 		speed = spd;
 	}
@@ -68,7 +69,7 @@ public class Entity {
 
 	void fliph() {
 		if (horient == 1.0f) {
-			location.setX(location.getX() - (0.5f * sprite.width));
+			//location.setX(location.getX() - (0.5f * sprite.width));
 			//location.setX(location.getX() - sprite.width);
 			//target.setX(target.getX() - (0.5f * sprite.width));
 			horient = -1.0f;
@@ -76,7 +77,7 @@ public class Entity {
 		else {
 			//location.setX(location.getX() - sprite.width);
 			//target.setX(target.getX() + sprite.width);
-			location.setX(location.getX() + (0.5f * sprite.width));
+			//location.setX(location.getX() + (0.5f * sprite.width));
 			//target.setX(target.getX() + (0.5f * sprite.width));
 			horient = 1.0f;
 		}

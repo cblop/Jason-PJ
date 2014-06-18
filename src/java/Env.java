@@ -16,6 +16,8 @@ public class Env extends Environment {
 
     //private Logger logger = Logger.getLogger("pjagents."+env.class.getName());
     //final PunchJudy pj = new PunchJudy();
+	
+	public Thread animThread;
     
     public Env() {
     	System.out.println("Env constructor");
@@ -25,15 +27,17 @@ public class Env extends Environment {
     @Override
     public void init(String[] args) {
     	//SettingsDialogue.main(args);
-		new Thread(){
+		animThread = new Thread(){
 			public void run() {
                 PApplet.main(new String[] { punchjudy.PuppetShow.class.getName() });
 			}
-		}.start();
+		};
+		
+		animThread.start();
 
 		// We need to wait for the show to start
 		try {
-			Thread.sleep(3000);
+			animThread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -49,17 +53,27 @@ public class Env extends Environment {
         //addPercept(Literal.parseLiteral("percept(demo)"));
         
         if (SettingsDialogue.settingsMap.get("punch") == 1) {
-        	//addPercept("punch", Literal.parseLiteral("pos(stageLeft)"));
-        	//addPercept("punch", Literal.parseLiteral("anger(" + SettingsDialogue.settingsMap.get("punchanger")  +")"));
+        	addPercept("punch", Literal.parseLiteral("startPos(stageLeft)"));
+        	addPercept("punch", Literal.parseLiteral("startAnger(" + SettingsDialogue.settingsMap.get("punchanger")  +")"));
+        }
+        else {
+        	addPercept("punch", Literal.parseLiteral("startPos(offstageLeft)"));
         }
         if (SettingsDialogue.settingsMap.get("judy") == 1) {
-//        	addPercept("judy", Literal.parseLiteral("pos(stageRight)"));
-//        	addPercept("judy", Literal.parseLiteral("health(" + SettingsDialogue.settingsMap.get("judyhealth")  +")"));
+        	addPercept("judy", Literal.parseLiteral("startPos(stageRight)"));
+        	addPercept("judy", Literal.parseLiteral("startHealth(" + SettingsDialogue.settingsMap.get("judyhealth")  +")"));
+        }
+        else {
+        	addPercept("judy", Literal.parseLiteral("startPos(offstageRight)"));
         }
         if (SettingsDialogue.settingsMap.get("joey") == 1) {
-        	//addPercept("joey", Literal.parseLiteral("pos(stageLeft)"));
-        	//addPercept("joey", Literal.parseLiteral("happy(" + SettingsDialogue.settingsMap.get("joeyhappy")  +")."));
+        	addPercept("joey", Literal.parseLiteral("startPos(stageRight)"));
+        	addPercept("joey", Literal.parseLiteral("startHappy(" + SettingsDialogue.settingsMap.get("joeyhappy")  +")."));
         }
+        else {
+        	addPercept("joey", Literal.parseLiteral("startPos(offstageRight)"));
+        }
+
     	
     }
 
@@ -75,7 +89,7 @@ public class Env extends Environment {
     	
     	if (functor.equals("move")) {
     		//System.out.println(values.get(0).toString());
-    		PuppetShow.addEvent(new MoveEvent(agName, 0, 10, valuef));
+    		PuppetShow.addEvent(new MoveEvent(agName, 10, 10, valuef));
     	}
     	
     	if (functor.equals("say")) {
@@ -92,6 +106,17 @@ public class Env extends Environment {
     			//PunchJudy.addEvent(new MoveEvent(agName, 10, 20, "stageRight"));
     			PuppetShow.addEvent(new SpeakEvent(agName, 10, 20, "laugh"));
     			PuppetShow.addEvent(new AnimEvent(agName, 10, 20, "hit"));
+    		}
+    	}
+    	
+    	if (functor.equals("die")) {
+    		System.out.println(agName + " has died.");
+			PuppetShow.addEvent(new AnimEvent(agName, 10, 10, "dead"));
+    	}
+    	
+    	if (functor.equals("scene")) {
+    		if (valuef.equals("end")) {
+    			stop();
     		}
     	}
     	

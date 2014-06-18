@@ -9,6 +9,7 @@ import processing.core.PConstants;
 
 public class Actor extends Entity {
 	PApplet parent;
+	//Coord offset = new Coord(-450, -400);
 	HashMap<String, Animation> animations = new HashMap<String, Animation>();
 	HashMap<String, Dialogue> dialogue = new HashMap<String, Dialogue>();
 	Animation currentAnim;
@@ -72,19 +73,30 @@ public class Actor extends Entity {
 
 	void showSubs() {
 		if (dialogue != null) {
+				//Coord offset = new Coord(-horient * sprite.width / 2, -400);
+				Coord offset = new Coord(-250, -400);
+				if (horient == -1.0f) {
+					offset.setX(offset.getX() - 200);
+				}
                 parent.textSize(32);
                 parent.fill(0, 0, 0);
-                parent.text(speech.subtitle, Math.abs(location.getX())-2, Math.abs(location.getY()) + 50);
+                //offset.setX(offset.getX()*horient);
+                //parent.text(speech.subtitle, location.getX()-2 + offset.getX(), location.getY() + offset.getY());
+                parent.text(speech.subtitle, location.getX()-2 + offset.getX(), location.getY() + offset.getY());
                 parent.textSize(32);
                 parent.fill(0, 0, 0);
-                parent.text(speech.subtitle, Math.abs(location.getX())+2, Math.abs(location.getY()) + 50);
+                //parent.text(speech.subtitle, location.getX()+2 + offset.getX(), location.getY() + offset.getY());
+                parent.text(speech.subtitle, location.getX()+2 + offset.getX(), location.getY() + offset.getY());
                 parent.fill(0, 0, 0);
-                parent.text(speech.subtitle, Math.abs(location.getX()), Math.abs(location.getY()) + 52);
+                //parent.text(speech.subtitle, location.getX() + offset.getX(), location.getY() + offset.getY() + 2);
+                parent.text(speech.subtitle, location.getX() + offset.getX(), location.getY() + offset.getY() + 2);
                 parent.fill(0, 0, 0);
-                parent.text(speech.subtitle, Math.abs(location.getX()), Math.abs(location.getY()) + 48);
+                //parent.text(speech.subtitle, location.getX() + offset.getX(), location.getY() + offset.getY() - 2);
+                parent.text(speech.subtitle, location.getX() + offset.getX(), location.getY() + offset.getY() - 2);
 
                 parent.fill(255, 255, 255);
-                parent.text(speech.subtitle, Math.abs(location.getX()), Math.abs(location.getY()) + 50);
+                //parent.text(speech.subtitle, location.getX() + offset.getX(), location.getY() + offset.getY());
+                parent.text(speech.subtitle, location.getX() + offset.getX(), location.getY() + offset.getY());
 		}
 	}
 
@@ -102,7 +114,7 @@ public class Actor extends Entity {
 	}
 
 	void update() {
-		processMouse();
+		//processMouse();
 		currentAnim.update();
 		sprite = currentAnim.frames[currentAnim.currentFrame];
 	}

@@ -3,33 +3,54 @@
 /* Initial beliefs and rules */
 
 //pos(stageRight).
-health(5).
+//health(5).
 //worry(0).
+sceneStart.
 //speed(10).
 //speed goes down with health. So why not just have health?
 
 /* Initial goals */
 // Taunt Punch. Must first greet him and ask questions.
+!greet(punch).
 !question(punch).
-!makeConfess(punch).
+//!makeConfess(punch).
 
 /* Plans */
+
++sceneStart
+	<- ?startPos(X);
+	   ?startHealth(Y);
+	   +pos(X);
+	   +health(Y);
+	   !question(punch);
+	   -sceneStart.
 
 +pos(P) : true
 	<- .print("Judy is at ", P);
 		move(P).
 
+
 +!question(punch) : health(X) & X <= 0
 	<- !die.
 	
+
+	
 +!die
 	<- .print("Judy is dead.");
-	-pos(stageRight);
-	+pos(offstageLeft).
+	die("judy");
+	scene("end").
 	//.send(narrative, achieve, endScene).
-	
+
+/*
 +!makeConfess(X)
 	<- !question(X).
+
+*/
+
+/*
++!question(punch)
+	<- .print("Judy -> Punch question").
+*/
 	
 +!question(punch) : health(X) & X > 0
 	<- .print("Judy asks Punch a question.");
@@ -39,10 +60,14 @@ health(5).
 	!question(punch).
 	
 +!greet(punch)
-	<- .send(punch, tell, greeting(judy));
+	<- .print("Hi, Punch");
+	.send(punch, tell, greeting(judy));
 	.wait(3000);
-	say(hello);
-	.print("Hi, Punch").
+	say(hello).
+	
+
++!take_damage : health(X) & X <= 0
+	<- !die.
 
 +!take_damage
 	<- ?health(X);
@@ -50,6 +75,9 @@ health(5).
 	.send(punch, tell, ouch(judy));
 	-health(X);
 	+health(X - 1).
+	
+	
+
 
 
 	

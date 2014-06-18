@@ -20,13 +20,13 @@ public class PuppetShow extends PApplet {
 	final int screenHeight = 600;
 	final float scalef = 0.7f; // size of the actor
 
-	public static final Coord OFFSTAGELEFT = new Coord(100, 500);
-    public static final Coord OFFSTAGERIGHT = new Coord(1400, 500);
+	public static final Coord OFFSTAGELEFT = new Coord(-1000, 500);
+    public static final Coord OFFSTAGERIGHT = new Coord(1600, 500);
     public static final Coord STAGELEFT = new Coord(200, 500);
     public static final Coord STAGELEFTCENTRE = new Coord(350, 500);
-    public static final Coord STAGERIGHT = new Coord(800, 500);
-    public static final Coord STAGERIGHTCENTRE = new Coord(650, 500);
-    public static final Coord STAGECENTRE = new Coord(500, 500);
+    public static final Coord STAGERIGHT = new Coord(1000, 500);
+    public static final Coord STAGERIGHTCENTRE = new Coord(800, 500);
+    public static final Coord STAGECENTRE = new Coord(550, 500);
 
 
 	Scene scene;
@@ -62,15 +62,17 @@ public class PuppetShow extends PApplet {
 		// put punch's dialogue into a hash map
 		HashMap<String, Dialogue> punchDialogue = new HashMap<String, Dialogue>();
 		punchDialogue.put("cool", new Dialogue(this, "sounds/cool_man.mp3", "Cool, man!"));
-		punchDialogue.put("laugh", new Dialogue(this, "sounds/dude_laugh.mp3", "Hahahaha"));
+		punchDialogue.put("laugh", new Dialogue(this, "sounds/dude_laugh.mp3", "Die!"));
 		punchDialogue.put("hello", new Dialogue(this, "sounds/hello_man.mp3", "Hello, man!"));
 		punchDialogue.put("disco", new Dialogue(this, "sounds/love_disco.mp3", "I love disco!"));
-		punchDialogue.put("wassup", new Dialogue(this, "sounds/wassup.mp3", "Wassup!"));
+		punchDialogue.put("wassup", new Dialogue(this, "sounds/wassup.mp3", "Hello!"));
 
 		// these are punch's animations, only one frame each for now
 		PImage[] punchRest = {loadImage("pics/PunchSide.png")};
 		PImage[] punchFront = {loadImage("pics/PunchFront.png")};
 		PImage[] punchHit = {loadImage("pics/PunchStick1.png"), loadImage("pics/PunchStick1.png"),
+				loadImage("pics/PunchStick1.png"), loadImage("pics/PunchStick1.png"),
+				loadImage("pics/PunchStick2.png"), loadImage("pics/PunchStick2.png"),
 				loadImage("pics/PunchStick2.png"), loadImage("pics/PunchStick2.png")};
 
 		// animations in a hash map
@@ -85,23 +87,30 @@ public class PuppetShow extends PApplet {
 		// these are judy's animations, only one frame each for now
 		PImage[] judyRest = {loadImage("pics/JudySide.png")};
 		PImage[] judyFront = {loadImage("pics/JudyFront.png")};
+		PImage[] judyDead = {loadImage("pics/JudyDead.png")};
 
 		// animations in a hash map
 		HashMap<String, Animation> judyAnims = new HashMap<String, Animation>();
 		judyAnims.put("rest", new Animation(judyRest));
 		judyAnims.put("front", new Animation(judyFront));
+		judyAnims.put("dead", new Animation(judyDead));
 
 		// initialise the judy actor
 		judy = new Actor(this, OFFSTAGERIGHT, new Coord(scalef, scalef), judyAnims, punchDialogue);
 		
 		
 		PImage[] joeyRest = {loadImage("pics/JoeySide.png")};
+		PImage[] joeyHit = {loadImage("pics/JoeyStick1.png"), loadImage("pics/JoeyStick1.png"),
+				loadImage("pics/JoeyStick1.png"), loadImage("pics/JoeyStick1.png"),
+				loadImage("pics/JoeyStick2.png"), loadImage("pics/JoeyStick2.png"),
+				loadImage("pics/JoeyStick2.png"), loadImage("pics/JoeyStick2.png")};
 		// animations in a hash map
 		HashMap<String, Animation> joeyAnims = new HashMap<String, Animation>();
 		joeyAnims.put("rest", new Animation(joeyRest));
+		joeyAnims.put("hit", new Animation(joeyHit));
 
 		// initialise the joey actor
-		joey = new Actor(this, OFFSTAGELEFT, new Coord(scalef, scalef), joeyAnims, punchDialogue);
+		joey = new Actor(this, OFFSTAGERIGHT, new Coord(scalef, scalef), joeyAnims, punchDialogue);
 		
 		
 		PImage stageImg = loadImage("pics/Stage-top.png");
@@ -145,7 +154,7 @@ public class PuppetShow extends PApplet {
 
 		actors.put("judy", judy);
         actors.put("punch", punch); // map of all actors in the scene
-		//actors.put("joey", joey);
+		actors.put("joey", joey);
 
 		// create and run the scene
 		scene = new Scene(this, screenWidth, screenHeight, bgimg, events, actors);

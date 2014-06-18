@@ -4,27 +4,28 @@
 
 //pos(stageRight).
 //health(5).
+sceneStart.
 
 /* Initial goals */
 // Taunt Punch. Must first greet him and ask questions.
-//!question(punch).
+!greet(punch).
+!question(punch).
 
 /* Plans */
+
++sceneStart
+	<- ?startPos(X);
+	   ?startHappy(Y);
+	   +pos(X);
+	   +happy(Y);
+	   !question(punch);
+	   -sceneStart.
 
 +pos(P) : true
 	<- .print("Joey is at ", P);
 		move(P).
-
-+!question(punch) : health(X) & X <= 0
-	<- !die.
 	
-+!die
-	<- .print("Joey is dead.");
-	-pos(stageRight);
-	+pos(offstageLeft);
-	.send(narrative, achieve, endScene).
-	
-+!question(punch) : health(X) & X > 0
++!question(punch) : happy(X) & X > 0
 	<- .print("Joey asks Punch a question.");
 	.send(punch, achieve, question(joey));
 	say(wassup);
@@ -37,12 +38,6 @@
 	say(hello);
 	.print("Hi, Punch").
 
-+!take_damage
-	<- ?health(X);
-	.print("Joey's health is ", X, ".");
-	.send(punch, tell, ouch(joey));
-	-health(X);
-	+health(X - 1).
 
 
 	
