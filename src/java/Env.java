@@ -3,6 +3,7 @@
 import jason.asSyntax.*;
 import jason.environment.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.*;
 
@@ -18,7 +19,9 @@ public class Env extends Environment {
     //final PunchJudy pj = new PunchJudy();
 	
 	public Thread animThread;
-    
+	public PApplet pde;
+    private String[] allAgents = {"punch", "judy", "joey"};
+
     public Env() {
     	System.out.println("Env constructor");
     }
@@ -28,8 +31,9 @@ public class Env extends Environment {
     public void init(String[] args) {
     	//SettingsDialogue.main(args);
 		animThread = new Thread(){
+		PApplet pde = new PApplet();
 			public void run() {
-                PApplet.main(new String[] { punchjudy.PuppetShow.class.getName() });
+                pde.main(new String[] { punchjudy.PuppetShow.class.getName() });
 			}
 		};
 		
@@ -41,39 +45,53 @@ public class Env extends Environment {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	startAgents(args);
+
+        super.init(args);
+
+
+    	startAgents();
 
     }
     
     
-    public void startAgents(String[] args) {
+    public void startAgents() {
     	System.out.println("Env is started");
-    	System.out.println(SettingsDialogue.settingsMap);
-        super.init(args);
+    	//System.out.println(SettingsDialogue.settingsMap);
+    	
         //addPercept(Literal.parseLiteral("percept(demo)"));
+        List<String> agents = new ArrayList<String>();
         
-        if (SettingsDialogue.settingsMap.get("punch") == 1) {
-        	addPercept("punch", Literal.parseLiteral("startPos(stageLeft)"));
-        	addPercept("punch", Literal.parseLiteral("startAnger(" + SettingsDialogue.settingsMap.get("punchanger")  +")"));
+        for (String ag : allAgents) {
+                if (SettingsDialogue.settingsMap.get(ag) == 1) {
+                        agents.add(ag);
+                }
         }
-        else {
-        	addPercept("punch", Literal.parseLiteral("startPos(offstageLeft)"));
-        }
-        if (SettingsDialogue.settingsMap.get("judy") == 1) {
-        	addPercept("judy", Literal.parseLiteral("startPos(stageRight)"));
-        	addPercept("judy", Literal.parseLiteral("startHealth(" + SettingsDialogue.settingsMap.get("judyhealth")  +")"));
-        }
-        else {
-        	addPercept("judy", Literal.parseLiteral("startPos(offstageRight)"));
-        }
-        if (SettingsDialogue.settingsMap.get("joey") == 1) {
-        	addPercept("joey", Literal.parseLiteral("startPos(stageRight)"));
-        	addPercept("joey", Literal.parseLiteral("startHappy(" + SettingsDialogue.settingsMap.get("joeyhappy")  +")."));
-        }
-        else {
-        	addPercept("joey", Literal.parseLiteral("startPos(offstageRight)"));
-        }
-
+    	
+    	for (String ag : agents.subList(0, 2)) {
+    		if (ag.equals("punch")) {
+    			System.out.println(SettingsDialogue.settingsMap.get("punchanger"));
+    			addPercept(ag, Literal.parseLiteral("startPos(stageLeft)."));
+    			addPercept(ag, Literal.parseLiteral("startAnger(" + SettingsDialogue.settingsMap.get("punchanger") + ")."));
+    			addPercept(ag, Literal.parseLiteral("sceneStart."));
+    		}
+    		else if (ag.equals("judy")){
+    			addPercept(ag, Literal.parseLiteral("startPos(stageRight)."));
+    			addPercept(ag, Literal.parseLiteral("startHealth(" + SettingsDialogue.settingsMap.get("judyhealth") + ")."));
+    			addPercept(ag, Literal.parseLiteral("sceneStart."));
+    		}
+    		else if (ag.equals("joey")){
+    			addPercept(ag, Literal.parseLiteral("startPos(stageRight)."));
+    			addPercept(ag, Literal.parseLiteral("startHappy(" + SettingsDialogue.settingsMap.get("joeyhappy") + ")."));
+    			addPercept(ag, Literal.parseLiteral("sceneStart."));
+    		}
+    	}
+        
+    }
+    
+    void updatePercepts (String[] agents, Literal newPercept) {
+    	for (String ag : agents) {
+    		addPercept(ag, newPercept);
+    	}
     	
     }
 
@@ -86,6 +104,13 @@ public class Env extends Environment {
     	String valuef = values.get(0).toString();
     	//System.out.println("Value: " + action.getTerm(0));
     	//System.out.println("Functor: " + action.getFunctor());
+    	removePercept(agName, Literal.parseLiteral("sceneStart."));
+    	
+    	// This is not ideal. Should just have one move event that takes two parameters:
+    	// start time and duration
+    	if (functor.equals("place")) {
+    		PuppetShow.addEvent(new MoveEvent(agName, 0, 0, valuef));
+    	}
     	
     	if (functor.equals("move")) {
     		//System.out.println(values.get(0).toString());
@@ -94,7 +119,7 @@ public class Env extends Environment {
     	
     	if (functor.equals("say")) {
     		//System.out.println(values.get(0).toString());
-    		PuppetShow.addEvent(new SpeakEvent(agName, 10, 20, valuef));
+    		PuppetShow.addEvent(new SpeakEvent(agName, 10, 10, valuef));
     		//PunchJudy.addEvent(new SpeakEvent(agName, 150, 20, "hello"));
     		//PunchJudy.addEvent(new SpeakEvent(agName, 150, 20, "Hey hey hey"));
     	}
@@ -107,21 +132,64 @@ public class Env extends Environment {
     			PuppetShow.addEvent(new SpeakEvent(agName, 10, 20, "laugh"));
     			PuppetShow.addEvent(new AnimEvent(agName, 10, 20, "hit"));
     		}
+    		if (valuef.equals("stop")) {
+    			System.out.println("Punch stops his hitting");
+    			PuppetShow.addEvent(new AnimEvent(agName, 10, 20, "rest"));
+    		}
     	}
     	
     	if (functor.equals("die")) {
     		System.out.println(agName + " has died.");
 			PuppetShow.addEvent(new AnimEvent(agName, 10, 10, "dead"));
-    	}
-    	
-    	if (functor.equals("scene")) {
-    		if (valuef.equals("end")) {
-    			stop();
-    		}
+			SettingsDialogue.settingsMap.put(agName, 0);
+			updatePercepts(allAgents, Literal.parseLiteral("dead(judy)"));
+			endScene();
     	}
     	
         return true;
     }
+    
+    private void startScene(String[] characters) {
+    	
+    }
+    
+    private void endScene() {
+			System.out.println("Scene has ended.");
+			int scenesLeft = SettingsDialogue.settingsMap.get("scenes");
+			if (scenesLeft > 1) {
+				System.out.println("Next scene");
+				//startScene();
+				try {
+					animThread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				addPercept("punch", Literal.parseLiteral("sceneEnd"));
+				addPercept("judy", Literal.parseLiteral("sceneEnd"));
+				addPercept("joey", Literal.parseLiteral("sceneEnd"));
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				startAgents();
+
+			}
+			else {
+				System.out.println("End of show");
+				stop();
+				//pde.exit();
+				//animThread.interrupt();
+				
+				// This exits the program. Probably don't want this.
+				// You'd instead want to fade to black.
+				//System.exit(0);
+			}
+    	
+    }
+    
 
     /** Called before the end of MAS execution */
     @Override

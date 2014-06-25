@@ -4,43 +4,56 @@
 
 //pos(stageLeft).
 //anger(0).
-sceneStart.
+//sceneStart.
 
 /* Initial goals */
 //!hit(judy).
-!mood(happy).
+!anger(0).
 
 
 /* Plans */
 
--annoyance
-	<- ?mood(X);
-	   -mood(X);
-	   +mood(happy).
+-annoyance(Y)
+	<- //?mood(X);
+	   //-mood(X);
+	   ?anger(X);
+	   !hit(stop);
+	   +anger(0).
+	   //+mood(happy).
 
 +sceneStart
 	<- ?startPos(X);
 	   ?startAnger(Y);
+	   move(X);
+	   +mood(happy);
 	   +pos(X);
 	   +anger(Y);
 	   -sceneStart.
 	   
++sceneEnd : true
+	<- move(offstageLeft).
+	   
 
 +greeting(X)
 	<- .print("Hi, ", X);
-		say(hello);
+		say(greeting);
 		-greeting(X).
 
 +pos(P) : true
  <- .print("Punch is at ", P);
  	move(P).
+ 	
++!hit(X) : X == stop
+	<- hit(X);
+	   .print("Punch stops hitting").
 
-+!hit(X)
++!hit(X) : X == judy
 	<- //+hitting(judy);
 	-pos(stageLeft);
 	//move(stageCentre);
 	+pos(stageCentre);
 	hit(X);
+	say(angry);
 	.send(X, achieve, take_damage);
 	.print("Punch hits ", X).
 	//do_hitting(judy).
@@ -53,37 +66,43 @@ sceneStart.
 	.print("Question from ", X);
 	+victim(X);
 	+annoyance(X);
-	+anger_rising(1);
-	!anger_check.
+	+anger_rising;
+	!anger_check(1).
 	
-+anger_rising(Y)
++dead(X) : annoyance(Y) & X == Y
+	<- .print("Punch believes ", X, " has died.");
+	-annoyance(Y).
+	   
+	
++anger_rising
 	<- ?anger(X);
+	?mood(Y);
 	-anger(X);
-	+anger(X + Y);
-	-anger_rising(Y).
+	say(Y);
+	+anger(X + 1);
+	-anger_rising.
 
-	
-+!anger_check(Y)
-	<- .print("Anger").
 
 +!anger_check(Y) : anger(X) & X < 4 
 	<- .print("Punch is happy");
+		!hit(stop);
 	   .print("Anger:", X).
 	
 
 
-+!anger_check : anger(X) & X > 3 & X < 6
++!anger_check(_) : anger(X) & X > 3 & X < 6
 	<- .print("Punch is OK");
 	   -mood(happy);
+		!hit(stop);
 	   +mood(OK).
 
-+!anger_check : anger(X) & X > 5 & X < 9
++!anger_check(_) : anger(X) & X > 5 & X < 9
 	<- .print("Punch is annoyed");
 	   -mood(OK);
 	   +mood(annoyed).
 	
 	
-+!anger_check : anger(X) & X > 8
++!anger_check(_) : anger(X) & X > 8
 	<- ?victim(Y); 
 	.print("Punch is angry");
 	-mood(annoyed);

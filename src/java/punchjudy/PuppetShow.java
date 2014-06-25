@@ -1,7 +1,12 @@
 package punchjudy;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import processing.core.*;
@@ -21,10 +26,10 @@ public class PuppetShow extends PApplet {
 	final float scalef = 0.7f; // size of the actor
 
 	public static final Coord OFFSTAGELEFT = new Coord(-1000, 500);
-    public static final Coord OFFSTAGERIGHT = new Coord(1600, 500);
-    public static final Coord STAGELEFT = new Coord(200, 500);
+    public static final Coord OFFSTAGERIGHT = new Coord(3600, 500);
+    public static final Coord STAGELEFT = new Coord(250, 500);
     public static final Coord STAGELEFTCENTRE = new Coord(350, 500);
-    public static final Coord STAGERIGHT = new Coord(1000, 500);
+    public static final Coord STAGERIGHT = new Coord(950, 500);
     public static final Coord STAGERIGHTCENTRE = new Coord(800, 500);
     public static final Coord STAGECENTRE = new Coord(550, 500);
 
@@ -48,6 +53,58 @@ public class PuppetShow extends PApplet {
              return events.remove();
 		}
 	}
+	
+	public HashMap<String, List<Dialogue>> readDialogueFile(String filename) {
+		String[] lines = loadStrings(filename);
+		List<Dialogue> dList = new ArrayList<Dialogue>();
+		HashMap<String, List<Dialogue>> dialogue = new HashMap<String, List<Dialogue>>();
+		String hmKey = null;
+		
+		for (String line : lines) {
+			if (line.startsWith(":")) {
+				dList.clear();
+				hmKey = split(line, ":")[1];
+			}
+			else {
+				String[] pieces = split(line,";");
+				System.out.println(hmKey);
+				System.out.println(pieces[1]);
+				Dialogue aline = new Dialogue(this, "sounds/" + pieces[1] + ".mp3", pieces[0]);
+				//Dialogue aline = new Dialogue(this, pieces[0]);
+				dList.add(aline);
+				dialogue.put(hmKey, new ArrayList<Dialogue>(dList));
+				/*
+				if (current == null) {
+					Dialogue[] newDial = {aline};
+					dialogue.put(hmKey, newDial);
+				}
+				else {
+					Dialogue[] replacement = new Dialogue[current.length + 1];
+					for (int i = 0;i<current.length;i++) {
+						replacement[i] = current[i];
+					}
+					replacement[replacement.length - 1] = aline;
+					
+					dialogue.put(hmKey, replacement);
+				}
+				*/
+			}
+		}
+		
+		//dialogue.get("happy").get(0).audio.play(0);
+		
+		System.out.println("Happy: " + dialogue.get("happy").get(0));
+		
+		for (String key : dialogue.keySet()) {
+			System.out.println(key);
+			for (Dialogue dial : dialogue.get(key)) {
+				System.out.println(dial.subtitle);
+				System.out.println(dial.soundPath);
+			}
+		}
+
+		return dialogue;
+	}
 
 
 	public void setup() {
@@ -58,14 +115,18 @@ public class PuppetShow extends PApplet {
         Actor punch;
         Actor judy;
         Actor joey;
-
+        
+        HashMap<String, List<Dialogue>> punchDialogue = readDialogueFile("sounds/punch/punch.csv");
+        HashMap<String, List<Dialogue>> judyDialogue = readDialogueFile("sounds/judy/judy.csv");
+        
+        /*
 		// put punch's dialogue into a hash map
 		HashMap<String, Dialogue> punchDialogue = new HashMap<String, Dialogue>();
-		punchDialogue.put("cool", new Dialogue(this, "sounds/cool_man.mp3", "Cool, man!"));
-		punchDialogue.put("laugh", new Dialogue(this, "sounds/dude_laugh.mp3", "Die!"));
-		punchDialogue.put("hello", new Dialogue(this, "sounds/hello_man.mp3", "Hello, man!"));
-		punchDialogue.put("disco", new Dialogue(this, "sounds/love_disco.mp3", "I love disco!"));
-		punchDialogue.put("wassup", new Dialogue(this, "sounds/wassup.mp3", "Hello!"));
+		punchDialogue.put("laugh", new Dialogue(this, "sounds/punch/punch-angry1.mp3", "Die!"));
+		punchDialogue.put("hello", new Dialogue(this, "sounds/punch/punch-hello.mp3", "Hello!"));
+		punchDialogue.put("wassup", new Dialogue(this, "sounds/punch/punch-hello.mp3", "Hello!"));
+		*/
+        
 
 		// these are punch's animations, only one frame each for now
 		PImage[] punchRest = {loadImage("pics/PunchSide.png")};
@@ -96,7 +157,7 @@ public class PuppetShow extends PApplet {
 		judyAnims.put("dead", new Animation(judyDead));
 
 		// initialise the judy actor
-		judy = new Actor(this, OFFSTAGERIGHT, new Coord(scalef, scalef), judyAnims, punchDialogue);
+		judy = new Actor(this, OFFSTAGERIGHT, new Coord(scalef, scalef), judyAnims, judyDialogue);
 		
 		
 		PImage[] joeyRest = {loadImage("pics/JoeySide.png")};
@@ -161,6 +222,7 @@ public class PuppetShow extends PApplet {
 		scene.runEvents();
 	}
 	
+	/*
 	public void mouseClicked() {
 		for (Actor act : actors.values()) {
                 act.moveTo(new Coord(mouseX, mouseY), 6.0f);
@@ -168,6 +230,7 @@ public class PuppetShow extends PApplet {
 		}
 		System.out.println(actors.get("punch").currentAnim);
 	}
+	*/
 
 	public void draw() {
 		// first draw the backdrop

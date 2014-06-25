@@ -45,7 +45,7 @@ public class SettingsDialogue extends JFrame implements ActionListener, ChangeLi
 		mainPanel = new JPanel(new GridLayout(0,1));
 		settingsPanel = new JPanel(new FlowLayout());
 		charPanel = new JPanel(new FlowLayout());
-		numScenes = new JSlider(JSlider.HORIZONTAL, 1, 6, 1);
+		numScenes = new JSlider(JSlider.HORIZONTAL, 1, 6, 2);
 		punchAngerLevel = new JSlider(JSlider.HORIZONTAL, 0, 10, 0);
 		punchAngerLevel.setMajorTickSpacing(1);
 		punchAngerLevel.setSnapToTicks(true);
@@ -90,12 +90,14 @@ public class SettingsDialogue extends JFrame implements ActionListener, ChangeLi
 		
 		//settingsPanel.add(agentLabel);
 		settingsPanel.add(sceneLabel);
-		settingsPanel.add(numScenes);
+		//settingsPanel.add(numScenes);
 		settingsPanel.add(audienceCheck);
 		settingsPanel.setBorder(BorderFactory.createTitledBorder("Scene"));
 		charPanel.add(punchCheck);
 		charPanel.add(judyCheck);
 		charPanel.add(joeyCheck);
+		charPanel.add(sceneLabel);
+		charPanel.add(numScenes);
 		charPanel.add(punchAngerLabel);
 		charPanel.add(punchAngerLevel);
 		charPanel.add(judyHealthLabel);
@@ -123,7 +125,7 @@ public class SettingsDialogue extends JFrame implements ActionListener, ChangeLi
 	public static void main(String[] args) {
 		settingsGui = new SettingsDialogue();
 		settingsGui.setTitle("Punch and Judy settings");
-		settingsGui.setSize(300,600);
+		settingsGui.setSize(300,700);
 		settingsGui.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		settingsGui.setVisible(true);
 	}

@@ -5,7 +5,7 @@
 //pos(stageRight).
 //health(5).
 //worry(0).
-sceneStart.
+//sceneStart.
 //speed(10).
 //speed goes down with health. So why not just have health?
 
@@ -20,6 +20,7 @@ sceneStart.
 +sceneStart
 	<- ?startPos(X);
 	   ?startHealth(Y);
+	   move(X);
 	   +pos(X);
 	   +health(Y);
 	   !question(punch);
@@ -34,11 +35,13 @@ sceneStart.
 	<- !die.
 	
 
++sceneEnd : true
+	<- move(offstageRight).
 	
 +!die
 	<- .print("Judy is dead.");
-	die("judy");
-	scene("end").
+	+dead;
+	die("judy").
 	//.send(narrative, achieve, endScene).
 
 /*
@@ -55,7 +58,7 @@ sceneStart.
 +!question(punch) : health(X) & X > 0
 	<- .print("Judy asks Punch a question.");
 	.send(punch, achieve, question(judy));
-	say(wassup);
+	say(happy);
 	.wait(3000);
 	!question(punch).
 	
@@ -63,7 +66,7 @@ sceneStart.
 	<- .print("Hi, Punch");
 	.send(punch, tell, greeting(judy));
 	.wait(3000);
-	say(hello).
+	say(greeting).
 	
 
 +!take_damage : health(X) & X <= 0

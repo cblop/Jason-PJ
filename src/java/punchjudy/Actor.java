@@ -3,6 +3,8 @@ package punchjudy;
 import java.util.HashMap;
 
 
+import java.util.List;
+
 //import punchjudy.Object;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -11,11 +13,11 @@ public class Actor extends Entity {
 	PApplet parent;
 	//Coord offset = new Coord(-450, -400);
 	HashMap<String, Animation> animations = new HashMap<String, Animation>();
-	HashMap<String, Dialogue> dialogue = new HashMap<String, Dialogue>();
+	HashMap<String, List<Dialogue>> dialogue = new HashMap<String, List<Dialogue>>();
 	Animation currentAnim;
 	Dialogue speech;
 	Boolean speaking;
-	Actor(PApplet p, Coord loc, Coord sca, HashMap<String, Animation> anims, HashMap<String, Dialogue> dial){
+	Actor(PApplet p, Coord loc, Coord sca, HashMap<String, Animation> anims, HashMap<String, List<Dialogue>> dial){
 		// constructor
 		super(p, anims.get("rest").frames[0], loc, sca);
 		parent = p;
@@ -23,7 +25,7 @@ public class Actor extends Entity {
 		dialogue = dial;
 		currentAnim = anims.get("rest");
 		speaking = false;
-		speech = dialogue.get("hello"); // very, very bad
+		speech = dialogue.get("happy").get(0); // very, very bad
 		speech.subtitle = ""; // nooooooo
 		//anchor = new Coord(0.0f, 0.0f);
 		horient = 1.0f;
@@ -40,10 +42,18 @@ public class Actor extends Entity {
 	}
 
 	void setSpeech(String spch) {
-		if (dialogue != null) {
-            speech = dialogue.get(spch);
+		//if (dialogue != null) {
+            //speech = dialogue.get(spch).get(0);
             //System.out.println("Speech string: " + speech.subtitle);
+		//}
+		System.out.println(spch);
+		
+		if (dialogue.get(spch) != null) {
+			int randVar = (int) parent.random(0, dialogue.get(spch).size());
+			System.out.println("Rand: " + randVar);
+			speech = dialogue.get(spch).get(randVar);
 		}
+		
 	}
 
 	void moveMouth() {
@@ -64,11 +74,11 @@ public class Actor extends Entity {
 	}
 
 	void sayLine() {
-		if (dialogue != null) {
-                if (!speech.audio.isPlaying()) {
-                        speech.audio.play(0); // 0 means from the beginning
-                }
-		}
+		//if (dialogue != null) {
+                //if (!speech.audio.isPlaying()) {
+                       speech.playSound();
+                //}
+		//}
 	}
 
 	void showSubs() {
@@ -102,9 +112,11 @@ public class Actor extends Entity {
 
 	void speak() {
 		if (dialogue != null) {
+				/*
                 if (speech.audio.position() >= speech.audio.length() - 70) { // need 70 samples tolerance
                         speaking = false;
                 }
+                */
                 if (speaking == true) {
                         moveMouth();
                 }
@@ -122,9 +134,11 @@ public class Actor extends Entity {
 	void display() {
 		parent.imageMode(PConstants.CENTER);
 		move();
+		/*
 		if (dialogue != null) {
                 speak();
 		}
+		*/
 		parent.pushMatrix();
 		//parent.imageMode(PConstants.CENTER);
 		//parent.translate(horient * location.getX(), location.getY());

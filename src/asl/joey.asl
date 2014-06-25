@@ -4,7 +4,7 @@
 
 //pos(stageRight).
 //health(5).
-sceneStart.
+//sceneStart.
 
 /* Initial goals */
 // Taunt Punch. Must first greet him and ask questions.
@@ -16,6 +16,7 @@ sceneStart.
 +sceneStart
 	<- ?startPos(X);
 	   ?startHappy(Y);
+	   move(X);
 	   +pos(X);
 	   +happy(Y);
 	   !question(punch);
